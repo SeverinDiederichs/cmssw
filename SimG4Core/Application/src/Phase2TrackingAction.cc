@@ -39,6 +39,7 @@ Phase2TrackingAction::Phase2TrackingAction(SimTrackManager* stm, CMSSteppingVerb
 }
 
 void Phase2TrackingAction::PreUserTrackingAction(const G4Track* aTrack) {
+#if 0  // AdePT: GPU callback tracks cannot use CMSSW TrackWithHistory bookkeeping yet.
   int pID = aTrack->GetParentID();
   auto trk = const_cast<G4Track*>(aTrack);
   if (0 == pID) {
@@ -83,9 +84,11 @@ void Phase2TrackingAction::PreUserTrackingAction(const G4Track* aTrack) {
     // Each track with energy above the threshold should be saved
     trkInfo_->putInHistory();
   }
+#endif
 }
 
 void Phase2TrackingAction::PostUserTrackingAction(const G4Track* aTrack) {
+#if 0  // AdePT: GPU callback tracks cannot use CMSSW TrackWithHistory bookkeeping yet.
   // Tracks in history may be upgraded to stored secondary tracks,
   // which cross the boundary between Tracker and Calo
   int id = aTrack->GetTrackID();
@@ -123,4 +126,5 @@ void Phase2TrackingAction::PostUserTrackingAction(const G4Track* aTrack) {
 
   EndOfTrack et(aTrack);
   m_endOfTrackSignal(&et);
+#endif
 }
