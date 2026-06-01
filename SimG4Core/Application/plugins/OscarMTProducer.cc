@@ -19,6 +19,7 @@
 #include "FWCore/Utilities/interface/Exception.h"
 
 #include "SimG4Core/Application/interface/OscarMTMasterThread.h"
+#include "SimG4Core/Application/interface/EventWindowTimer.h"
 #include "SimG4Core/Application/interface/RunManagerMT.h"
 #include "SimG4Core/Application/interface/RunManagerMTWorker.h"
 #include "SimG4Core/Notification/interface/TmpSimEvent.h"
@@ -192,6 +193,7 @@ void OscarMTProducer::globalEndJob(OscarMTMasterThread* masterThread) {
   if (masterThread) {
     masterThread->stopThread();
   }
+  simg4::eventWindowTimerPrintSummary();
 }
 
 void OscarMTProducer::beginRun(const edm::Run&, const edm::EventSetup& es) {

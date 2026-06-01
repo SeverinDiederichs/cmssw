@@ -1,4 +1,5 @@
 #include "SimG4Core/Application/interface/Phase2EventAction.h"
+#include "SimG4Core/Application/interface/EventWindowTimer.h"
 #include "SimG4Core/Application/interface/SimRunInterface.h"
 #include "SimG4Core/Notification/interface/TmpSimEvent.h"
 #include "SimG4Core/Notification/interface/TmpSimVertex.h"
@@ -22,6 +23,8 @@ Phase2EventAction::Phase2EventAction(const edm::ParameterSet& p,
       m_debug(p.getUntrackedParameter<bool>("debug", false)) {}
 
 void Phase2EventAction::BeginOfEventAction(const G4Event* anEvent) {
+  simg4::eventWindowTimerBeginEvent();
+
   BeginOfEvent e(anEvent);
   m_beginOfEventSignal(&e);
 
@@ -57,6 +60,8 @@ void Phase2EventAction::EndOfEventAction(const G4Event* anEvent) {
   // dispatch now end of event
   EndOfEvent e(anEvent);
   m_endOfEventSignal(&e);
+
+  simg4::eventWindowTimerEndEvent();
 
   // delete transient objects
   m_trackManager->reset();
